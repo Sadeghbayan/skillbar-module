@@ -1,0 +1,4 @@
+name = remover
+core = 7.x
+description = remove all the tab in user login page By Soheil in <a href="http://webpen.ir">Webpen</a> .
+package = Webpen

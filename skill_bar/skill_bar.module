@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * Implement hook_theme
+ */
+function skill_bar_theme($existing, $type, $theme, $path) {
+    return array(
+        'skill_bar' => array(
+            'variables' => array(
+                'css3' => NULL,
+                'php' => NULL,
+                'html5' => NULL,
+                'mysql' => NULL,
+                'javascript' => NULL,
+            ),
+            'template' => 'skill-bar',
+        )
+    );
+}
+/*
+ * Implements hook_menu().
+ */
+function skill_bar_menu() {
+    $items = array();
+    $items['admin/config/media/skillbar'] = array(
+        'title' => 'Raphael skill',
+        'description' => t('Configure a list of skill that you have.'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('skillbar_form'),
+        'access arguments' => array('administer site configuration'),
+        'file' => 'skillbar_form.inc',
+    );
+    return $items;
+}
+
+/**
+ * Implement hook_block_info
+ */
+function skill_bar_block_info() {
+    $blocks['skill_bar'] = array(
+        'info' => t('Skill Bar'),
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    return $blocks;
+}
+
+/**
+ * Implement hook_block_view().
+ *
+ */
+function skill_bar_block_view($delta = '') {
+    $block = array();
+    switch ($delta):
+        case 'skill_bar':
+            $slides = array();
+            $library = libraries_get_path('skillbar');
+            $block['subject'] = t('Raphael');
+            $block['content'] = array(
+                '#css3' => check_plain(variable_get('css3')),
+                '#javascript' => check_plain(variable_get('javascript')),
+                '#html5' => check_plain(variable_get('html5')),
+                '#mysql' => check_plain(variable_get('mysql')),
+                '#php' => check_plain(variable_get('php')),
+                '#theme' => 'skill_bar',
+                '#attached' => array(
+                    'css' => array(
+                        $library . '/custom.css',
+                        $library . '/reset.css',
+                        $library . '/default.css',
+                    ),
+                    'js' => array(
+                        $library . '/init.js',
+                        $library . '/jq.js',
+                        $library . '/raphael.js',
+                        $library . '/custom.js',
+//                        $library . '/js_UNCODED/allinone_contentSlider.js',
+                    ),
+                ),
+            );
+            break;
+
+    endswitch;
+    return $block;
+}
+
+/**
+ * Implements hook_uninstall()
+ *
+ * Remove variables used.
+ */
+function skillbar_uninstall() {
+    variable_del('css3');
+    variable_del('php');
+    variable_del('html5');
+    variable_del('mysql');
+    variable_del('javascript');
+}

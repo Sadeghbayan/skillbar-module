@@ -1,0 +1,4 @@
+name = Skill bar
+description = Create a skill bar block with raphael.js
+core = 7.x
+version = Beta 7.x-1

@@ -1,0 +1,6 @@
+<?php
+function remover_menu_alter(&$items) {
+    $items['user']['type'] = MENU_CALLBACK;
+    $items['user/register']['type'] = MENU_CALLBACK;
+    $items['user/password']['type'] = MENU_CALLBACK;
+}
